@@ -1,0 +1,8 @@
+.card{
+    cursor: pointer;
+}
+
+#frozenFood:hover{
+    background: cyan;
+    color: white;
+}
