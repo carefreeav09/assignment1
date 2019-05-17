@@ -9,7 +9,6 @@ function displayFrozenFood() {
     document.getElementById('beveragesResult').style.display = 'none';
     document.getElementById('homeResult').style.display = 'none';
     document.getElementById('petFoodResult').style.display = 'none';
-
 }
 
 function displayFreshFood() {
@@ -64,5 +63,10 @@ function displayPetFood() {
     document.getElementById('beveragesResult').style.display = 'none';
     document.getElementById('homeResult').style.display = 'none';
 
+}
+
+function setSession(data) {
+    window.sessionStorage.setItem('selectedItem', data);
+    console.log(window.sessionStorage.getItem('selectedItem'))
 }
 

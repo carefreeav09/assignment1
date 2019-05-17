@@ -1,3 +1,7 @@
+<?php
+session_start();
+include_once('./database/connection.php');
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -5,13 +9,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+    <link rel="stylesheet" href="./styles/main.css">
     <title>Assignment</title>
 </head>
 <body>
-<?php
-include_once('./database/connection.php');
-?>
+
 <div class="row w-100 m-0">
     <div class="col-md-9 p-0 m-0" style="height: 100vh">
         <nav class="navbar navbar-dark bg-dark">
@@ -64,14 +66,13 @@ include_once('./database/connection.php');
         <div class="container">
             <div id="frozenFoodResult" class="justify-content-around mt-4" style="display: none">
                 <?php
-                $sql = 'SELECT  DISTINCT product_name FROM products WHERE product_id IN(1000,1001, 1002,1003, 1004, 1005)';
-                $sql2 = 'SELECT * from products where product_name = "Fish Fingers"';
+                $sql = 'select * from products where product_id IN(1000,1001, 1002,1003, 1004, 1005)';
                 $result = $conn->query($sql);
-                $result2 = $conn->query($sql2);
                 if ($result->num_rows > 0) {
                     // output data of each row
                     while ($row = $result->fetch_assoc()) {
-                        echo "<div class='card'><div class='card-body'>" . $row[product_name] . "</div></div>";
+                        echo "<div class='card' onclick=setSession(" . (int)$row['product_id'] . ") id='".$row['product_id']."'><div class='card-body'>" . $row['product_name'] . "<br>(" . $row['unit_quantity']. ")"."</div></div>";
+
                     }
                 } else {
                     echo "0 results";
@@ -81,14 +82,13 @@ include_once('./database/connection.php');
 
             <div id="freshFoodResult" class="justify-content-around mt-4" style="display: none">
                 <?php
-                $sql = 'SELECT  DISTINCT product_name FROM products WHERE product_id IN(3000, 3001, 3002, 3003, 3004, 3005, 3006, 3007)';
-                $sql2 = 'SELECT * from products where product_name = "Fish Fingers"';
+                $sql = 'SELECT * FROM products WHERE product_id IN(3000, 3001, 3002, 3003, 3004, 3005, 3006, 3007)';
                 $result = $conn->query($sql);
-                $result2 = $conn->query($sql2);
                 if ($result->num_rows > 0) {
                     // output data of each row
                     while ($row = $result->fetch_assoc()) {
-                        echo "<div class='card' ><div class='card-body'>" . $row[product_name] . "</div></div>";
+                        echo "<div class='card' onclick='setSession(".$row['product_id'].")' id='".$row['product_id']."'><div class='card-body'>" . $row['product_name'] . "<br>(" . $row['unit_quantity']. ")"."</div></div>";
+
                     }
                 } else {
                     echo "0 results";
@@ -98,14 +98,12 @@ include_once('./database/connection.php');
 
             <div id="beveragesResult" class="justify-content-around mt-4" style="display: none">
                 <?php
-                $sql = 'SELECT  DISTINCT product_name FROM products WHERE product_id IN(4000, 4001, 4002, 4003, 4004, 4005)';
-                $sql2 = 'SELECT * from products where product_name = "Fish Fingers"';
+                $sql = 'SELECT * FROM products WHERE product_id IN(4000, 4001, 4002, 4003, 4004, 4005)';
                 $result = $conn->query($sql);
-                $result2 = $conn->query($sql2);
                 if ($result->num_rows > 0) {
                     // output data of each row
                     while ($row = $result->fetch_assoc()) {
-                        echo "<div class='card'><div class='card-body'>" . $row[product_name] . "</div></div>";
+                        echo "<div class='card' onclick='setSession(".$row['product_id'].")' id='".$row['product_id']."'><div class='card-body'>" . $row['product_name'] . "<br>(" . $row['unit_quantity']. ")"."</div></div>";
                     }
                 } else {
                     echo "0 results";
@@ -115,14 +113,12 @@ include_once('./database/connection.php');
 
             <div id="homeResult" class="justify-content-around mt-4" style="display: none">
                 <?php
-                $sql = 'SELECT  DISTINCT product_name FROM products WHERE product_id IN(2000, 2001, 2002, 2003, 2004, 2005, 2006)';
-                $sql2 = 'SELECT * from products where product_name = "Fish Fingers"';
+                $sql = 'SELECT  * FROM products WHERE product_id IN(2000, 2001, 2002, 2003, 2004, 2005, 2006)';
                 $result = $conn->query($sql);
-                $result2 = $conn->query($sql2);
                 if ($result->num_rows > 0) {
                     // output data of each row
                     while ($row = $result->fetch_assoc()) {
-                        echo "<div class='card'><div class='card-body'>" . $row[product_name] . "</div></div>";
+                        echo "<div class='card' onclick='setSession(".$row['product_id'].")' id='".$row['product_id']."'><div class='card-body'>" . $row['product_name'] . "<br>(" . $row['unit_quantity']. ")"."</div></div>";
                     }
                 } else {
                     echo "0 results";
@@ -132,14 +128,12 @@ include_once('./database/connection.php');
 
             <div id="petFoodResult" class="justify-content-around mt-4" style="display: none">
                 <?php
-                $sql = 'SELECT  DISTINCT product_name FROM products WHERE product_id IN(5000, 5001, 5002, 5003, 5004)';
-                $sql2 = 'SELECT * from products where product_name = "Fish Fingers"';
+                $sql = 'SELECT  * FROM products WHERE product_id IN(5000, 5001, 5002, 5003, 5004)';
                 $result = $conn->query($sql);
-                $result2 = $conn->query($sql2);
                 if ($result->num_rows > 0) {
                     // output data of each row
                     while ($row = $result->fetch_assoc()) {
-                        echo "<div class='card'><div class='card-body'>" . $row[product_name] . "</div></div>";
+                        echo "<div class='card' onclick=setSession(" . (int)$row['product_id'] . ") id='".$row['product_id']."'><div class='card-body'>" . $row['product_name'] . "<br>(" . $row['unit_quantity']. ")"."</div></div>";
                     }
                 } else {
                     echo "0 results";
@@ -147,13 +141,11 @@ include_once('./database/connection.php');
                 ?>
             </div>
         </div>
-
     </div>
-
 
     <div class="col-md-3 p-0 m-0" style="height: 100vh">
         <div class="col-md-12 card" style="height: 50vh">
-
+            <?php require('details.php'); ?>
         </div>
 
         <div class="col-md-12 card" style="height: 50vh">
