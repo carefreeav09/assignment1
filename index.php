@@ -12,7 +12,7 @@ include_once('./database/connection.php');
     <link rel="stylesheet" href="./styles/main.css">
     <title>Assignment</title>
 </head>
-<body>
+<body style="overflow-y: hidden">
 
 <div class="row w-100 m-0">
     <div class="col-md-9 p-0 m-0" style="height: 100vh">
@@ -71,7 +71,7 @@ include_once('./database/connection.php');
                 if ($result->num_rows > 0) {
                     // output data of each row
                     while ($row = $result->fetch_assoc()) {
-                        echo "<div class='card' onclick=setSession(" . (int)$row['product_id'] . ") id='".$row['product_id']."'><div class='card-body'>" . $row['product_name'] . "<br>(" . $row['unit_quantity']. ")"."</div></div>";
+                        echo "<div class='card clickable' onclick=setSession(" . (int)$row['product_id'] . ") id='" . $row['product_id'] . "'><div class='card-body'>" . $row['product_name'] . "<br>(" . $row['unit_quantity'] . ")" . "</div></div>";
 
                     }
                 } else {
@@ -87,7 +87,7 @@ include_once('./database/connection.php');
                 if ($result->num_rows > 0) {
                     // output data of each row
                     while ($row = $result->fetch_assoc()) {
-                        echo "<div class='card' onclick='setSession(".$row['product_id'].")' id='".$row['product_id']."'><div class='card-body'>" . $row['product_name'] . "<br>(" . $row['unit_quantity']. ")"."</div></div>";
+                        echo "<div class='card clickable' onclick='setSession(" . $row['product_id'] . ")' id='" . $row['product_id'] . "'><div class='card-body'>" . $row['product_name'] . "<br>(" . $row['unit_quantity'] . ")" . "</div></div>";
 
                     }
                 } else {
@@ -103,7 +103,7 @@ include_once('./database/connection.php');
                 if ($result->num_rows > 0) {
                     // output data of each row
                     while ($row = $result->fetch_assoc()) {
-                        echo "<div class='card' onclick='setSession(".$row['product_id'].")' id='".$row['product_id']."'><div class='card-body'>" . $row['product_name'] . "<br>(" . $row['unit_quantity']. ")"."</div></div>";
+                        echo "<div class='card clickable' onclick='setSession(" . $row['product_id'] . ")' id='" . $row['product_id'] . "'><div class='card-body'>" . $row['product_name'] . "<br>(" . $row['unit_quantity'] . ")" . "</div></div>";
                     }
                 } else {
                     echo "0 results";
@@ -118,7 +118,7 @@ include_once('./database/connection.php');
                 if ($result->num_rows > 0) {
                     // output data of each row
                     while ($row = $result->fetch_assoc()) {
-                        echo "<div class='card' onclick='setSession(".$row['product_id'].")' id='".$row['product_id']."'><div class='card-body'>" . $row['product_name'] . "<br>(" . $row['unit_quantity']. ")"."</div></div>";
+                        echo "<div class='card clickable' onclick='setSession(" . $row['product_id'] . ")' id='" . $row['product_id'] . "'><div class='card-body'>" . $row['product_name'] . "<br>(" . $row['unit_quantity'] . ")" . "</div></div>";
                     }
                 } else {
                     echo "0 results";
@@ -133,7 +133,7 @@ include_once('./database/connection.php');
                 if ($result->num_rows > 0) {
                     // output data of each row
                     while ($row = $result->fetch_assoc()) {
-                        echo "<div class='card' onclick=setSession(" . (int)$row['product_id'] . ") id='".$row['product_id']."'><div class='card-body'>" . $row['product_name'] . "<br>(" . $row['unit_quantity']. ")"."</div></div>";
+                        echo "<div class='card clickable' onclick=setSession(" . (int)$row['product_id'] . ") id='" . $row['product_id'] . "'><div class='card-body'>" . $row['product_name'] . "<br>(" . $row['unit_quantity'] . ")" . "</div></div>";
                     }
                 } else {
                     echo "0 results";
@@ -144,20 +144,105 @@ include_once('./database/connection.php');
     </div>
 
     <div class="col-md-3 p-0 m-0" style="height: 100vh">
-        <div class="col-md-12 card" style="height: 50vh">
-            <?php require('details.php'); ?>
+        <div class="col-md-12 card selectedDataResult p-3" style="height: 50vh">
+            No Items Selected
         </div>
 
-        <div class="col-md-12 card" style="height: 50vh">
-            whuu
+        <div class="col-md-12 card " style="height:50vh; overflow-y: auto">
+            <h6 class="text-center font-weight-bold">Shopping Cart</h6>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                </tr>
+                </thead>
+                <tbody class="cartData">
+
+                </tbody>
+                <tfoot>
+                </tfoot>
+            </table>
+            <div class="btn-group">
+                <button class='cleanCart btn btn-danger d-inline-flex w-50 white-text'>Clear Cart</button>
+                <button type='button' data-toggle="modal" data-target="#checkoutModal" class='checkoutBtn btn btn-primary ml-2 d-inline-flex w-50'>Checkout</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Checkout</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Price</th>
+                        <th scope="col">Quantity</th>
+                    </tr>
+
+                    </thead>
+                    <tbody class="checkoutData">
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td colspan="4" class="pull-right text-right float-right">
+                            Total :
+                        </td>
+                    </tr>
+                    </tfoot>
+
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#emailModal">Proceed to checkout</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Enter Customer Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="submitMail">
+                    <input type="text" id="name" class="form-control" placeholder="Enter Name" required>
+                    <input type="text" id="address" class="form-control mt-1" placeholder="Enter address" required>
+                    <input type="text" id="suburb" class="form-control mt-1" placeholder="Enter suburb" required>
+                    <input type="text" id="state" class="form-control mt-1" placeholder="Enter state" required>
+                    <input type="text" id="country" class="form-control mt-1" placeholder="Enter country" required>
+                    <input type="email" id="email" class="form-control mt-1" placeholder="Enter email" required>
+                    <input type="button" class="btn btn-primary mt-2" value="Purchase." id="submit">
+                </form>
+            </div>
+
         </div>
     </div>
 </div>
 
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+<script
+        src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
         crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
@@ -166,5 +251,96 @@ include_once('./database/connection.php');
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
         crossorigin="anonymous"></script>
 <script src="js/main.js"></script>
+<script>
+    $(document).ready(function () {
+
+        $("#submit").click(function(event) {
+            event.preventDefault();
+            var name = $("#name").val();
+            var address = $("#address").val();
+            var suburb = $("#suburb").val();
+            var state = $("#state").val();
+            var country = $("#country").val();
+            var email = $("#email").val();
+            $.ajax({
+                type: "POST",
+                url: "mail.php",
+                data : {name: name, address: address,suburb:suburb, state:state, country:country,email:email },
+                success: function (response) {
+                    $("#checkoutModal").modal('toggle');
+                    $("#emailModal").modal('toggle');
+                    $.ajax({
+                        type: "GET",
+                        url: "cartCart.php",
+                        success: function (data) {
+                            $(".cartData").html(data)
+                        }
+                    });
+                }
+            });
+        });
+
+        $.ajax({
+            type: "GET",
+            url: "getCart.php",
+            success: function (data) {
+                $(".cartData").html(data)
+            }
+        });
+
+        $(".checkoutBtn").click(function () {
+            $.ajax({
+                type: "GET",
+                url: "getCart.php",
+                success: function (data) {
+                    $(".checkoutData").html(data)
+                }
+            });
+        });
+
+
+        $(".cleanCart").click(function () {
+            $.ajax({
+                type: "GET",
+                url: "cartCart.php",
+                success: function (data) {
+                    $(".cartData").html(data)
+                }
+            });
+        });
+
+
+        $(".clickable").click(function () {
+            var selectedData = $(this).attr('id');
+            $.ajax({
+                type: "POST",
+                data: {data: selectedData},
+                url: "details.php",
+                success: function (data) {
+                    $(".selectedDataResult").html(data)
+                }
+            });
+        });
+    });
+
+    $(document).on('click', '.addToCart', '.quantity', function () {
+        var addedToCart = $('.addToCart').attr('id');
+        var quantity = $('.quantity').val();
+
+        if(quantity != null && quantity < 21) {
+            $.ajax({
+                type: "POST",
+                data: {product_id: addedToCart, quantity: quantity},
+                url: "cart.php",
+                success: function (data) {
+                    $(".cartData").html(data)
+                }
+            });
+        }
+        else{
+            alert('Invalid Quantity Entry');
+        }
+    })
+</script>
 </body>
 </html>
