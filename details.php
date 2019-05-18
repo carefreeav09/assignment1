@@ -13,6 +13,8 @@ if ($result->num_rows > 0) {
             "<p> Price : " . $row['unit_price']. "</p>" .
             "<p> Quantity : " . $row['unit_quantity']. "</p>" .
             "<p> Stock : " . $row['in_stock']. "</p>" .
+            "<input type='hidden' value='" .  $row['product_name'] . "(". $row['unit_quantity'] . ")" . "' class='productName'>" .
+            "<input type='hidden' value='" .  $row['unit_price'] . "' class='price'>" .
             "<input name='quantity' class='form-control d-inline-block quantity' placeholder='Please Enter Quantity' required min='0' max='20'/>".
             "<button class='btn btn-success addToCart d-inline-block mt-2' id='".$row['product_id']."'> Add To Cart </button>" .
             "</div></div>";

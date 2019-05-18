@@ -1,5 +1,7 @@
 <?php
 session_start();
+$cartDataArray = [];
+$_SESSION['cart'] = $cartDataArray;
 include_once('./database/connection.php');
 ?>
 <!doctype html>
@@ -11,6 +13,9 @@ include_once('./database/connection.php');
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="./styles/main.css">
     <title>Assignment</title>
+    <script>
+        window.localStorage.clear();
+    </script>
 </head>
 <body style="overflow-y: hidden">
 
@@ -153,16 +158,16 @@ include_once('./database/connection.php');
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">ID</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Price</th>
                     <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
                 </tr>
                 </thead>
                 <tbody class="cartData">
 
                 </tbody>
                 <tfoot>
+
                 </tfoot>
             </table>
             <div class="btn-group">
@@ -188,8 +193,8 @@ include_once('./database/connection.php');
                     <tr>
                         <th scope="col">ID</th>
                         <th scope="col">Name</th>
-                        <th scope="col">Price</th>
                         <th scope="col">Quantity</th>
+                        <th scope="col">Price</th>
                     </tr>
 
                     </thead>
@@ -197,8 +202,8 @@ include_once('./database/connection.php');
                     </tbody>
                     <tfoot>
                     <tr>
-                        <td colspan="4" class="pull-right text-right float-right">
-                            Total :
+                        <td colspan="4" class="pull-right text-right float-right" style="width: max-content">
+                            Total : <span id="total"></span>
                         </td>
                     </tr>
                     </tfoot>
@@ -280,22 +285,28 @@ include_once('./database/connection.php');
             });
         });
 
-        $.ajax({
-            type: "GET",
-            url: "getCart.php",
-            success: function (data) {
-                $(".cartData").html(data)
-            }
-        });
+
 
         $(".checkoutBtn").click(function () {
-            $.ajax({
-                type: "GET",
-                url: "getCart.php",
-                success: function (data) {
-                    $(".checkoutData").html(data)
-                }
-            });
+            var localstorageData = JSON.parse(window.localStorage.getItem('cartArray'));
+            console.log(localstorageData);
+            var html = '';
+            var priceCount = 0;
+            for(var i =0 ; i < localstorageData.length; i++)
+            {
+                html = html + "<tr>" +
+                    "<td>" + localstorageData[i][0]+ "</td>" +
+                    "<td>" +localstorageData[i][2] + "</td>" +
+                    "<td>" + localstorageData[i][1] + "</td>" +
+                    "<td>" + localstorageData[i][3] + "</td>" +
+                    "</tr>";
+                priceCount = priceCount + parseFloat(localstorageData[i][3]);
+
+                console.log(html);
+            }
+            $('#total').html(priceCount);
+
+            $('.checkoutData').append(html);
         });
 
 
@@ -326,14 +337,28 @@ include_once('./database/connection.php');
     $(document).on('click', '.addToCart', '.quantity', function () {
         var addedToCart = $('.addToCart').attr('id');
         var quantity = $('.quantity').val();
+        var productName = $('.productName').val();
+        var price = $('.price').val();
 
         if(quantity != null && quantity < 21) {
             $.ajax({
                 type: "POST",
-                data: {product_id: addedToCart, quantity: quantity},
-                url: "cart.php",
+                data: {product_id: addedToCart, quantity: quantity, productName: productName, price: price},
+                url: "newCart.php",
                 success: function (data) {
-                    $(".cartData").html(data)
+                    var js_array = JSON.parse(data);
+                    window.localStorage.setItem('cartArray', JSON.stringify(js_array) );
+                    var html = '';
+                    for(var i =0 ; i < js_array.length; i++)
+                    {
+                        html = "<tr>" +
+                            "<td>" +js_array[i][2] + "</td>" +
+                            "<td>" + js_array[i][1] + "</td>" +
+                            "<td>" + js_array[i][3] + "</td>" +
+                            "</tr>"
+                    }
+                    $('.cartData').append(html);
+
                 }
             });
         }
