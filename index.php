@@ -274,13 +274,9 @@ include_once('./database/connection.php');
                 success: function (response) {
                     $("#checkoutModal").modal('toggle');
                     $("#emailModal").modal('toggle');
-                    $.ajax({
-                        type: "GET",
-                        url: "cartCart.php",
-                        success: function (data) {
-                            $(".cartData").html(data)
-                        }
-                    });
+                    window.localStorage.clear();
+                    $(".cartData").html("<h4>No Data are present</h4>")
+
                 }
             });
         });
